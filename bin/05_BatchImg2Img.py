@@ -151,6 +151,8 @@ control_dict= get_CNmap()
 # 轮询开始出图
 total_start = time.time()
 for frame, txt in zip(frame_files, txt_files):
+    start = time.time()
+    
     frame_file = os.path.join(frame_path,frame)
     txt_file = os.path.join(frame_path,txt)
     im = Image.open(frame_file)
@@ -244,8 +246,6 @@ for frame, txt in zip(frame_files, txt_files):
 
 
     try:
-        start = time.time()
-
         i = r['images'][0]
         image = Image.open(io.BytesIO(base64.b64decode(i.split(",",1)[0])))
 
