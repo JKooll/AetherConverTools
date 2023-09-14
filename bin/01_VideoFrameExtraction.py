@@ -2,6 +2,7 @@ import subprocess
 import os
 import torch
 import shutil
+import time
 
 print('\n========== 以太转绘工作流脚本 ==========\n')
 print('工作流即将开始，请确保当前目录下有视频文件，且文件名格式为：video.mp4')
@@ -39,6 +40,9 @@ os.environ["PYTORCH_JIT"] = "1"
 # 使用CUDA进行加速
 torch.set_grad_enabled(False)
 
+# 计时开始
+start = time.time()
+
 # 使用 ffmpeg 命令行工具截取视频帧，并将其保存为图片
 subprocess.call([
     "ffmpeg", "-i", video_file,
@@ -46,7 +50,7 @@ subprocess.call([
     os.path.join(frame_out_dir, "%05d.png")
 ])
 
-print("\n\n视频转帧步骤已完成！码率为： " + str(fps))
+print(f"\n\n视频转帧步骤已完成！码率为： {fps}, 耗时：{time.time() - start:.2f} 秒")
 
 # 是否进行下一步
 choice = input("\n是否直接开始下一步，将视频帧输出为蒙版？\n1. 是\n2. 否\n请输入你的选择：")

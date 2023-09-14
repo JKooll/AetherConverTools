@@ -6,6 +6,7 @@ import base64
 import subprocess
 from io import BytesIO
 from PIL import Image, PngImagePlugin
+import time
 
 # 定义本机的SD网址
 url = input("请填入你的SD地址（默认http://127.0.0.1:7860）：") or 'http://127.0.0.1:7860'
@@ -148,6 +149,7 @@ control_dict= get_CNmap()
 #     encoded_image_template = img_str(Image.open(image_template))
 
 # 轮询开始出图
+total_start = time.time()
 for frame, txt in zip(frame_files, txt_files):
     frame_file = os.path.join(frame_path,frame)
     txt_file = os.path.join(frame_path,txt)
@@ -242,6 +244,8 @@ for frame, txt in zip(frame_files, txt_files):
 
 
     try:
+        start = time.time()
+
         i = r['images'][0]
         image = Image.open(io.BytesIO(base64.b64decode(i.split(",",1)[0])))
 
@@ -253,12 +257,12 @@ for frame, txt in zip(frame_files, txt_files):
         pnginfo.add_text("Parameters: ", response2.json().get("info"))
         image.save(os.path.join(out_path,frame), pnginfo=pnginfo)
         encoded_image_template = img_str(image)
-        print(frame+"生成完毕！")
+        print(f"{frame}生成完毕！耗时：{start - time.time():.2f} 秒")
     except Exception as e:
         print(f"错误：处理图生图时出现异常，请查看SD控制台报错信息。")
         print(str(e))
         quit()     
-print("全部图片生成完毕！共计"+str(len(frame_files))+"张！")
+print(f"全部图片生成完毕！共计{len(frame_files)}张！耗时：{time.time() - total_start:.2f} 秒")
 
 # 是否进行下一步
 choice = input("\n是否直接开始下一步，将图生图后的图像与裁切图片进行尺寸对齐？\n1. 是\n2. 否\n请输入你的选择：")

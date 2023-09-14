@@ -5,6 +5,9 @@ import shutil
 import cv2
 import numpy as np
 from PIL import Image
+import time
+
+start = time.time()
 
 print("检测是否有可用的CUDA设备中……")
 # 检查是否有可用的CUDA设备
@@ -103,7 +106,7 @@ for filename in files:
         cv2.imwrite(new_file_path, im)  
 
 
-print("蒙版文件生成完成！")
+print(f"蒙版文件生成完成！耗时：{time.time() - start:.2f} 秒")
 
 # 是否进行下一步
 choice = input("\n是否直接开始下一步，把视频帧和蒙版进行裁切？\n1. 是\n2. 否\n请输入你的选择：")
