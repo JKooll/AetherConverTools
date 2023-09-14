@@ -257,7 +257,7 @@ for frame, txt in zip(frame_files, txt_files):
         pnginfo.add_text("Parameters: ", response2.json().get("info"))
         image.save(os.path.join(out_path,frame), pnginfo=pnginfo)
         encoded_image_template = img_str(image)
-        print(f"{frame}生成完毕！耗时：{start - time.time():.2f} 秒")
+        print(f"{frame}生成完毕！耗时：{time.time() - start:.2f} 秒")
     except Exception as e:
         print(f"错误：处理图生图时出现异常，请查看SD控制台报错信息。")
         print(str(e))
